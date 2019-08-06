@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         root = QHBoxLayout(self.central_widget)
 
         btnPulse = QPushButton('PULSE')
-        btnPulse.clicked.connect(self.generatePulse)
+        btnPulse.clicked.connect(self.btnClick_pulse)
         btnPulse.setFixedHeight(400)
         root.addWidget(btnPulse)
 
@@ -37,22 +37,30 @@ class MainWindow(QMainWindow):
 
     def btnClick_btnClose(self):
 
-        GPIO.cleanup()
+        GPIO.output(self.pin, GPIO.LOW)
         QCoreApplication.instance().quit()
-
 
 
     pin = 11
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(11, GPIO.OUT)
+    
+    def btnClick_pulse(self):
+        i = 0
+        for i in range(300):
+                self.generatePulse(i)
+                #time.sleep(.1)
+        
+        print('bitti...')
 
-    def generatePulse(self):
+    def generatePulse(self, val):
 
         GPIO.output(self.pin, GPIO.HIGH)
-        time.sleep(1)
+        print('val: ' + str(val))
+        time.sleep(.1)
 
         GPIO.output(self.pin, GPIO.LOW)
-        time.sleep(1)
+        time.sleep(.1)
         return
 
 def main():
